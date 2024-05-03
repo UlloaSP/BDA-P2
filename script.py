@@ -29,6 +29,8 @@ def menu(conn):
         else:
             print(constants.INVALID_OPTION)
 
+        input()
+
 
 def main():
     conn = databaseService.connect_db()
