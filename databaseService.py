@@ -7,7 +7,9 @@ import constants
 
 
 def connect_db():
+    print(constants.TRY_CONNECTION)
     try:
+
         conn = psycopg2.connect(
             host=constants.HOST,
             user=constants.USER,
@@ -17,16 +19,20 @@ def connect_db():
 
         conn.autocommit = False
 
+        print(constants.SUCCESSFULL_CONNECTION)
+
         return conn
 
     except Exception as e:
-        print(f"Erro de conexión: {e}")
+        print(constants.FAILED_CONNECTION + f"{e}")
         sys.exit(1)
 
 
 def disconnect_db(conn):
     conn.commit()
+    print(constants.TERMINATING_CONNECTION)
     conn.close()
+    print(constants.TERMINATED_CONNECTION)
 
 
 def create_tables(conn):
@@ -35,12 +41,13 @@ def create_tables(conn):
 
     with conn.cursor() as cur:
         try:
+            print(constants.CREATING_TABLES)
             cur.execute(sql)
             conn.commit()
-            print("Táboas creadas")
+            print(constants.CREATED_TABLES)
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.DUPLICATE_TABLE:
-                print("As táboas xa existen. Non se crean.")
+                print(constants.DUPLICATED_TABLES)
             else:
-                print(f"Erro: {e.pgcode} - {e.pgerror}")
+                print(constants.ERROR + f"{e.pgcode} - {e.pgerror}")
             conn.rollback()
