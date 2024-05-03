@@ -128,7 +128,10 @@ def delete_user(conn):
             else:
                 print("O usuario foi eliminado con éxito.")
         except psycopg2.Error as e:
-            print(f"Erro: {e.pgcode} - {e.pgerror}")
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
 

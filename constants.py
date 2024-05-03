@@ -28,6 +28,7 @@ DUPLICATED_TABLES = 'As taboas xa foron creadas anteriormente. Non se crean.'
 ERROR = 'Erro: '
 INVALID_OPTION = 'Opción no válida. Por favor, elige una opción del menú.'
 VALID_OPTIONS = ('1', '2', '3', '4', '5', '6', '7')
+GLOBAL_ERROR = "Erro: {pgcode} - {pgerror}"
 
 DEFAULT_INPUT = 'Opción> '
 
