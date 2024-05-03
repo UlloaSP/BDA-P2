@@ -35,7 +35,10 @@ def insert_todo(conn):
                 if e.diag.column_name == 'priority':
                     print(f"Debe especificarse unha prioridade")
             else:
-                print(f"Erro: {e.pgcode} - {e.pgerror}")
+                print(constants.GLOBAL_ERROR.format(
+                    pgcode=str(e.pgcode),
+                    pgerror=str(e.pgerror)
+                ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
     sql = constants.SQL_INSERT_TODO
@@ -54,5 +57,8 @@ def insert_todo(conn):
                 if e.diag.column_name == 'todoid':
                     print(f"Debe especificarse unha tarefa.")
             else:
-                print(f"Erro: {e.pgcode} - {e.pgerror}")
+                print(constants.GLOBAL_ERROR.format(
+                    pgcode=str(e.pgcode),
+                    pgerror=str(e.pgerror)
+                ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción

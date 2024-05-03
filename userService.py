@@ -31,7 +31,10 @@ def insert_user(conn):
                 if e.diag.column_name == 'password':
                     print(f"Debe especificarse un contranisal")
             else:
-                print(f"Erro: {e.pgcode} - {e.pgerror}")
+                print(constants.GLOBAL_ERROR.format(
+                    pgcode=str(e.pgcode),
+                    pgerror=str(e.pgerror)
+                ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
 
@@ -54,7 +57,10 @@ def find_users(conn):
             print(f"Atopáronse {cur.rowcount} usuarios")
             conn.commit()
         except psycopg2.Error as e:
-            print(f"Erro: {e.pgcode} - {e.pgerror}")
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
 
@@ -80,7 +86,10 @@ def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor 
                 print(f"O usuario con nome {name} non existe")
             conn.commit()
         except psycopg2.Error as e:
-            print(f"Erro: {e.pgcode} - {e.pgerror}")
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
 
@@ -110,7 +119,10 @@ def find_user_by_email(conn, control_tx=True):
                 print(f"O usuario co email {email} non existe")
             conn.commit()
         except psycopg2.Error as e:
-            print(f"Erro: {e.pgcode} - {e.pgerror}")
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
             if control_tx:
                 conn.rollback()
     return retval
@@ -157,5 +169,8 @@ def update_password(conn):
             if e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
                 print("O contrasinal non pode ser nulo")
             else:
-                print(f"Erro: {e.pgcode} - {e.pgerror}")
+                print(constants.GLOBAL_ERROR.format(
+                    pgcode=str(e.pgcode),
+                    pgerror=str(e.pgerror)
+                ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción

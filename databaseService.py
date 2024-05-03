@@ -49,5 +49,8 @@ def create_tables(conn):
             if e.pgcode == psycopg2.errorcodes.DUPLICATE_TABLE:
                 print(constants.DUPLICATED_TABLES)
             else:
-                print(constants.ERROR + f"{e.pgcode} - {e.pgerror}")
+                print(constants.GLOBAL_ERROR.format(
+                    pgcode=str(e.pgcode),
+                    pgerror=str(e.pgerror)
+                ))
             conn.rollback()
