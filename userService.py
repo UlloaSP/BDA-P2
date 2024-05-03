@@ -8,11 +8,7 @@ def insert_user(conn):
     name = input("Nome: ")
     email = input("Email: ")
     password = input("Contrasinal: ")
-
-    sql = """
-        insert into "User" (name, email, password, registrationDate)
-        values(%(name)s, %(email)s, %(password)s, CURRENT_TIMESTAMP)
-    """
+    sql = constants.SQL_INSERT_USER
 
     with conn.cursor() as cur:
         try:
@@ -40,10 +36,7 @@ def insert_user(conn):
 
 
 def find_users(conn):
-    sql = """
-        select *
-        from "User"
-        """
+    sql = constants.SQL_FIND_USERS
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
         try:
@@ -68,11 +61,7 @@ def find_users(conn):
 def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor True
     name = input("Nome: ")
 
-    sql = """
-        select *
-        from "User"
-        where name = %s
-        """
+    sql = constants.SQL_FIND_USER_BY_NAME
 
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
@@ -96,18 +85,10 @@ def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor 
 
 
 def find_user_by_email(conn, control_tx=True):
-    """
-    :param conn: a conexión aberta á bd
-    :param control_tx: Indica se a función fará control transaccional (commit/rollback)
-    """
     email = input("Correo: ")
-
-    sql = """
-        select *
-        from "User"
-        where email = %s
-        """
+    sql = constants.SQL_FIND_USER_BY_EMAIL
     retval = None
+
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
         try:
@@ -137,10 +118,8 @@ def find_user_by_email(conn, control_tx=True):
 
 def delete_user(conn):
     email = input("Correo: ")
+    sql = constants.SQL_DELETE_USER
 
-    sql = """
-        delete from "User" where email = %(email)s
-    """
     with conn.cursor() as cur:
         try:
             cur.execute(sql, {'email': email})
@@ -164,11 +143,7 @@ def update_password(conn):
     if password == "":
         password = None
 
-    sql = """
-        update "User"
-        set password = %(password)s
-        where email = %(email)s
-        """
+    sql = constants.SQL_UPDATE_PASSWORD
 
     with conn.cursor() as cur:
         try:

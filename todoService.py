@@ -1,5 +1,7 @@
 import psycopg2
 from psycopg2 import errorcodes
+
+import constants
 import userService
 
 
@@ -12,10 +14,7 @@ def insert_todo(conn):
     status = input("Estatus: ")
     priority = input("Prioridade: ")
 
-    sql = """
-        insert into todo (title, description, limitdate, status, priority, creationdate)
-        values(%(title)s, %(description)s, %(limitdate)s, %(status)s, %(priority)s, CURRENT_TIMESTAMP)
-    """
+    sql = constants.SQL_INSERT_TODO
 
     with conn.cursor() as cur:
         try:
@@ -39,10 +38,7 @@ def insert_todo(conn):
                 print(f"Erro: {e.pgcode} - {e.pgerror}")
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
-    sql = """
-        insert into usertodo (userid, todoid)
-        values(%(userid)s, %(todoid)s)
-        """
+    sql = constants.SQL_INSERT_TODO
 
     with conn.cursor() as cur:
         try:
