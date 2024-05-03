@@ -1,6 +1,8 @@
 import psycopg2
 from psycopg2 import extras, errorcodes
 
+import constants
+
 
 def insert_user(conn):
     name = input("Nome: ")
@@ -48,8 +50,13 @@ def find_users(conn):
             cur.execute(sql)
             row = cur.fetchone()  # devuelve las filas que ha encontrado en el select
             while row:
-                print(f"Id: {row['userid']}, Nome: {row['name']}, Correo: {row['email']}, "
-                      f"Contrasinal: {row['password']}, Data de rexistro: {row['registrationdate']}")
+                print(constants.USER_INFO_TEMPLATE.format(
+                    userid=row['userid'],
+                    name=row['name'],
+                    email=row['email'],
+                    password=row['password'],
+                    registrationdate=row['registrationdate']
+                ))
                 row = cur.fetchone()
             print(f"Atopáronse {cur.rowcount} usuarios")
             conn.commit()
@@ -73,8 +80,13 @@ def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor 
             cur.execute(sql, (name,))
             row = cur.fetchone()  # devuelve la fila que ha encontrado en el select
             if row:  # if row is not None
-                print(f"Id: {row['userid']}, Nome: {row['name']}, Correo: {row['email']}, "
-                      f"Contrasinal: {row['password']}, Data de rexistro: {row['registrationdate']}")
+                print(constants.USER_INFO_TEMPLATE.format(
+                    userid=row['userid'],
+                    name=row['name'],
+                    email=row['email'],
+                    password=row['password'],
+                    registrationdate=row['registrationdate']
+                ))
             else:
                 print(f"O usuario con nome {name} non existe")
             conn.commit()
@@ -104,8 +116,15 @@ def find_user_by_email(conn, control_tx=True):
             if row:  # if row is not None
                 retval = {'id': row['userid'], 'name': row['name'], 'email': row['email'],
                           'password': row['password'], 'registrationDate': row['registrationdate']}
-                print(f"Id: {row['userid']}, Nome: {row['name']}, Correo: {row['email']}, "
-                      f"Contrasinal: {row['password']}, Data de rexistro: {row['registrationdate']}")
+
+                print(constants.USER_INFO_TEMPLATE.format(
+                    userid=row['userid'],
+                    name=row['name'],
+                    email=row['email'],
+                    password=row['password'],
+                    registrationdate=row['registrationdate']
+                ))
+
             else:
                 print(f"O usuario co email {email} non existe")
             conn.commit()

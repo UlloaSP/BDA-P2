@@ -30,3 +30,6 @@ INVALID_OPTION = 'Opción no válida. Por favor, elige una opción del menú.'
 VALID_OPTIONS = ('1', '2', '3', '4', '5', '6', '7')
 
 DEFAULT_INPUT = 'Opción> '
+
+USER_INFO_TEMPLATE = ("Id: {userid}, Nome: {name}, Correo: {email}, Contrasinal: {password}, "
+                      "Data de rexistro: {registrationdate}")
