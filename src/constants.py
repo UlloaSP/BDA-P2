@@ -48,10 +48,11 @@ INSERT_USER_DUPLICATED_NAME = "Xa existe un usuario co nome {name}"
 INSERT_USER_DUPLICATED_EMAIL = "Xa existe un usuario co email {email}"
 INSERT_USER_NOT_NULL_NAME = "Debe especificarse un nome de usuario"
 INSERT_USER_NOT_NULL_EMAIL = "Debe especificarse un correo electrónico"
-INSERT_USER_NOT_NULL_PASSWORD = "Debe especificarse un contranisal"
+NOT_NULL_PASSWORD = "Debe especificarse un contranisal"
 
 FIND_USERS_SUCCESS = "Atopáronse {number} usuario/s"
-
+DELETE_USER_SUCCESS = "O usuario foi eliminado con éxito."
+UPDATE_PASSWORD_SUCCESS = "Contrasinal actualizado"
 USER_INFO_TEMPLATE = ("Id: {userid}, Nome: {name}, Correo: {email}, Contrasinal: {password}, "
                       "Data de rexistro: {registrationdate}")
 

@@ -92,7 +92,7 @@ def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor 
 
 
 def find_user_by_email(conn, control_tx=True):
-    email = input("Correo: ")
+    email = input(constants.EMAIL_INPUT)
     sql = constants.SQL_FIND_USER_BY_EMAIL
     retval = None
 
@@ -127,16 +127,16 @@ def find_user_by_email(conn, control_tx=True):
 
 
 def delete_user(conn):
-    email = input("Correo: ")
+    email = input(constants.EMAIL_INPUT)
     sql = constants.SQL_DELETE_USER
 
     with conn.cursor() as cur:
         try:
             cur.execute(sql, {'email': email})
             if cur.rowcount == 0:
-                print(f"O usuario con correo {email} non existe")
+                print(constants.NON_EXISTENT_USER_SEARCH_BY_EMAIL.format(email=email))
             else:
-                print("O usuario foi eliminado con éxito.")
+                print(constants.DELETE_USER_SUCCESS)
         except psycopg2.Error as e:
             print(constants.GLOBAL_ERROR.format(
                 pgcode=str(e.pgcode),
@@ -162,10 +162,10 @@ def update_password(conn):
         try:
             cur.execute(sql, {'password': password, 'email': user['email']})
             conn.commit()
-            print("Contrasinal actualizado")
+            print(constants.UPDATE_PASSWORD_SUCCESS)
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
-                print("O contrasinal non pode ser nulo")
+                print(constants.NOT_NULL_PASSWORD)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),
