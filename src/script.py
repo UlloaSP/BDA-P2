@@ -30,6 +30,14 @@ def menu(conn):
                 todoService.find_todo_by_id(conn)
             elif opcion == '9':
                 todoService.find_todo_by_title(conn)
+            elif opcion == '10':
+                userService.delete_user_complete(conn)
+            elif opcion == '11':
+                todoService.add_line_description(conn)
+            elif opcion == '12':
+                todoService.add_user_to_todo(conn)
+            elif opcion == '13':
+                todoService.update_date(conn)
         else:
             print(constants.INVALID_OPTION)
 

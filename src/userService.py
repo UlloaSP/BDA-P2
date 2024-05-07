@@ -2,6 +2,7 @@ import psycopg2
 from psycopg2 import extras, errorcodes
 
 import constants
+import todoService
 
 
 def insert_user(conn):
@@ -91,15 +92,17 @@ def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor 
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
 
-def find_user_by_email(conn, control_tx=True):
-    email = input(constants.EMAIL_INPUT)
+def find_user_by_email(conn, control_tx=True, email=None):
+    if not email:
+        email = input(constants.EMAIL_INPUT)
+
     sql = constants.SQL_FIND_USER_BY_EMAIL
     retval = None
 
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
         try:
-            cur.execute(sql, {'email': email})
+            cur.execute(sql, (email,))
             row = cur.fetchone()  # devuelve la fila que ha encontrado en el select
             if row:  # if row is not None
                 retval = {'id': row['userid'], 'name': row['name'], 'email': row['email'],
@@ -126,8 +129,10 @@ def find_user_by_email(conn, control_tx=True):
     return retval
 
 
-def delete_user(conn):
-    email = input(constants.EMAIL_INPUT)
+def delete_user(conn, email=None):
+    if not email:
+        email = input(constants.EMAIL_INPUT)
+
     sql = constants.SQL_DELETE_USER
 
     with conn.cursor() as cur:
@@ -143,6 +148,84 @@ def delete_user(conn):
                 pgerror=str(e.pgerror)
             ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
+
+
+def delete_user_complete(conn):
+    user = find_user_by_email(conn)
+
+    # Buca ids de Todos del usuario
+    sql = """
+    select todoId from UserTodo where userId = %(userid)s
+    """
+    todos_id_list = []
+
+    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # cursor con diccionario para poder buscar los nombres de las columnas de la fila
+        try:
+            cur.execute(sql, {'userid': user['id']})
+            row = cur.fetchone()
+            while row:
+                todos_id_list.append(row['todoid'])
+                row = cur.fetchone()
+        except psycopg2.Error as e:
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
+
+    # Borra la entrada de UserTodo con id=userId
+    sql = """
+    delete from UserTodo where userId = %(userid)s
+    """
+    with conn.cursor() as cur:
+        try:
+            cur.execute(sql, {'userid': user['id']})
+            if cur.rowcount == 0:
+                print(f"No existe el userid={user['id']}")
+            else:
+                print(f"Se eliminaron {cur.rowcount} filas.")
+        except psycopg2.Error as e:
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
+            conn.rollback()  # isto ocorre sempre que sucede unha excepción
+    # ---------------------------------------------
+
+    delete_user(conn, user['email'])
+
+    # Buscar todos los Todos y (gracias a la lista de ids) borrarlos si no están en la relación
+    sql = """
+    select * from UserTodo where todoid = %(todoid)s
+    """
+
+    sql_remove = """
+    delete from Todo where todoid = %(todoid)s
+    """
+
+    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # cursor con diccionario para poder buscar los nombres de las columnas de la fila
+        try:
+            for todoid in todos_id_list:
+                cur.execute(sql, {'todoid': int(todoid)})
+                row = cur.fetchone()
+                print(row)
+                if not row:
+                    cur.execute(sql_remove, {'todoid': int(todoid)})
+                else:
+                    while row:
+                        if cur.rowcount >= 0:
+                            print("Hola")
+                            cur.execute(sql_remove, {'todoid': int(todoid)})
+                            if cur.rowcount != 1:
+                                print(f"Error al eliminar Todo con id = {todoid}")
+                        row = cur.fetchone()
+                conn.commit()
+        except psycopg2.Error as e:
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
 
 
 def update_password(conn):

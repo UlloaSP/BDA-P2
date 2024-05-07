@@ -1,8 +1,8 @@
 HOST = 'localhost'
-USER = 'ulloa'
-PASSWORD = '3821'
-DB = 'bd'
-SQL_CREATE_TABLES = 'CreateTables.sql'
+USER = 'mon'
+PASSWORD = 'clave'
+DB = 'mon'
+SQL_CREATE_TABLES = './src/CreateTables.sql'
 MENU_TEXT = """
 -- MENÚ --
 1 - Insertar usuario
@@ -14,6 +14,10 @@ MENU_TEXT = """
 7 - Insertar ToDo
 8 - Buscar ToDo por Id
 9 - Buscat ToDo por título
+10 - Borrar usuario
+11 - Añadir liña á descripción dun ToDo
+12 - Añadir usuario a un ToDo
+13 - Actualizar data límite da tarefa
 q - Saír
 """
 
@@ -29,7 +33,7 @@ DUPLICATED_TABLES = 'As taboas xa foron creadas anteriormente. Non se crean.'
 
 ERROR = 'Erro: '
 INVALID_OPTION = 'Opción no válida. Por favor, elige una opción del menú.'
-VALID_OPTIONS = ('1', '2', '3', '4', '5', '6', '7', '8', '9')
+VALID_OPTIONS = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13')
 GLOBAL_ERROR = "Erro: {pgcode} - {pgerror}"
 
 NON_EXISTENT_TODO_SEARCH_BY_ID = "O ToDo con id: {id} non existe."

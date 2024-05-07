@@ -100,7 +100,6 @@ def find_todo_by_title(conn, control_tx=True):
 
 
 def insert_todo(conn):
-    # TODO - cambiar transaccionalidad. Si falla el segundo insert, que se haga un rollback del primero
     userid = userService.find_user_by_email(conn)['id']
     title = input(constants.TITLE_INPUT)
     description = input(constants.DESCRIPTION_INPUT)
@@ -114,7 +113,10 @@ def insert_todo(conn):
         try:
             cur.execute(sql, {'title': title, 'description': description, 'limitdate': limitdate,
                               'status': status, 'priority': priority})
+            todoid = find_todo_by_title(conn)['todoid']
+            insert_users_todo(conn, userid, todoid)
             conn.commit()
+            print("A tarefa foi creada correctamente.")
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
                 if e.diag.column_name == 'title':
@@ -134,13 +136,13 @@ def insert_todo(conn):
                 ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
-    sql = constants.SQL_INSERT_TODO
+
+def insert_users_todo(conn, userid, todoid):
+    sql = constants.SQL_INSERT_USER_TODO
 
     with conn.cursor() as cur:
         try:
-            cur.execute(sql, {'userid': userid, 'todoid': 1})
-            conn.commit()
-            print("A tarefa foi creada correctamente.")
+            cur.execute(sql, {'userid': userid, 'todoid': todoid})
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 print(f"Este usuario xa ten esta tarefa.")
@@ -156,3 +158,66 @@ def insert_todo(conn):
                 ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
+
+def add_line_description(conn):
+    todo = find_todo_by_title(conn)
+
+    additional_description = input("Engada unha liña á descripción: ")
+
+    sql = """
+    UPDATE Todo SET description = CONCAT(description, %(description)s) WHERE todoid = %(todoid)s
+    """
+
+    with conn.cursor() as cur:
+        try:
+            cur.execute(sql, {'description': additional_description, 'todoid': todo['todoid']})
+            conn.commit()
+        except psycopg2.Error as e:
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
+            conn.rollback()  # isto ocorre sempre que sucede unha excepción
+
+
+def update_date(conn):
+    todo = find_todo_by_title(conn)
+
+    days = input("Indique a cantidade de días a engadir á data límite: ")
+
+    sql = """
+    UPDATE Todo
+    SET limitdate = limitdate + INTERVAL %(days)s DAY
+    WHERE todoid = %(todoid)s
+    """
+
+    with conn.cursor() as cur:
+        try:
+            cur.execute(sql, {'days': days, 'todoid': todo['todoid']})
+            conn.commit()
+        except psycopg2.Error as e:
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
+            conn.rollback()  # isto ocorre sempre que sucede unha excepción
+
+
+def add_user_to_todo(conn):
+    userid = userService.find_user_by_email(conn)['id']
+    todoid = find_todo_by_title(conn)['todoid']
+
+    sql = """
+    insert into usertodo (userid, todoid)
+    values(%(userid)s, %(todoid)s)
+    """
+    with conn.cursor() as cur:
+        try:
+            cur.execute(sql, {'userid': userid, 'todoid': todoid})
+            conn.commit()
+        except psycopg2.Error as e:
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
+            conn.rollback()  # isto ocorre sempre que sucede unha excepción
