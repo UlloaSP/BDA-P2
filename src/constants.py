@@ -36,6 +36,7 @@ NON_EXISTENT_TODO_SEARCH_BY_ID = "O ToDo con id: {id} non existe."
 NON_EXISTENT_TODO_SEARCH_BY_TITLE = "O ToDo con título: {title} non existe."
 NON_EXISTENT_USER_SEARCH_BY_NAME = "O usuario con nome {name} non existe"
 NON_EXISTENT_USER_SEARCH_BY_EMAIL = "O usuario con email {email} non existe"
+
 DEFAULT_INPUT = 'Opción> '
 FIND_TODO_BY_ID_INPUT = 'Id del ToDo: '
 FIND_TODO_BY_TITLE_INPUT = 'Título del ToDo: '
@@ -43,6 +44,12 @@ NAME_INPUT = "Nome: "
 EMAIL_INPUT = "Email: "
 PASSWORD_INPUT = "Contrasinal: "
 NEW_PASSWORD_INPUT = "Novo Contrasinal: "
+TITLE_INPUT = "Título: "
+DESCRIPTION_INPUT = "Descripcion: "
+LIMIT_DATE_INPUT = "Data límite: "
+STATUS_INPUT = "Estado: "
+PRIORITY_INPUT = "Prioridade: "
+
 
 INSERT_USER_SUCCESS = "O usuario foi insertado con éxito."
 INSERT_USER_DUPLICATED_NAME = "Xa existe un usuario co nome {name}"
@@ -50,6 +57,11 @@ INSERT_USER_DUPLICATED_EMAIL = "Xa existe un usuario co email {email}"
 INSERT_USER_NOT_NULL_NAME = "Debe especificarse un nome de usuario"
 INSERT_USER_NOT_NULL_EMAIL = "Debe especificarse un correo electrónico"
 NOT_NULL_PASSWORD = "Debe especificarse un contranisal"
+NOT_NULL_TITLE = "Debe especificarse un título"
+NOT_NULL_DESCRIPTION = "Debe especificarse unha descripción"
+NOT_NULL_LIMIT_DATE = "Debe especificarse unha data límite"
+NOT_NULL_STATUS = "Debe especificarse un estatus"
+NOT_NULL_PRIORITY = "Debe especificarse unha prioridade"
 
 FIND_USERS_SUCCESS = "Atopáronse {number} usuario/s"
 DELETE_USER_SUCCESS = "O usuario foi eliminado con éxito."

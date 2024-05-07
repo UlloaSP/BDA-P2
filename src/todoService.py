@@ -102,11 +102,11 @@ def find_todo_by_title(conn, control_tx=True):
 def insert_todo(conn):
     # TODO - cambiar transaccionalidad. Si falla el segundo insert, que se haga un rollback del primero
     userid = userService.find_user_by_email(conn)['id']
-    title = input("Título: ")
-    description = input("Descripción: ")
-    limitdate = input("Data límite: ")
-    status = input("Estatus: ")
-    priority = input("Prioridade: ")
+    title = input(constants.TITLE_INPUT)
+    description = input(constants.DESCRIPTION_INPUT)
+    limitdate = input(constants.LIMIT_DATE_INPUT)
+    status = input(constants.STATUS_INPUT)
+    priority = input(constants.PRIORITY_INPUT)
 
     sql = constants.SQL_INSERT_TODO
 
@@ -116,18 +116,17 @@ def insert_todo(conn):
                               'status': status, 'priority': priority})
             conn.commit()
         except psycopg2.Error as e:
-            print("No commit")
             if e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
                 if e.diag.column_name == 'title':
-                    print(f"Debe especificarse un título")
+                    print(constants.NOT_NULL_TITLE)
                 if e.diag.column_name == 'description':
-                    print(f"Debe especificarse unha descripción")
+                    print(constants.NOT_NULL_DESCRIPTION)
                 if e.diag.column_name == 'limitdate':
-                    print(f"Debe especificarse unha data límite")
+                    print(constants.NOT_NULL_LIMIT_DATE)
                 if e.diag.column_name == 'status':
-                    print(f"Debe especificarse un estatus")
+                    print(constants.NOT_NULL_STATUS)
                 if e.diag.column_name == 'priority':
-                    print(f"Debe especificarse unha prioridade")
+                    print(constants.NOT_NULL_PRIORITY)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),
@@ -156,3 +155,4 @@ def insert_todo(conn):
                     pgerror=str(e.pgerror)
                 ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
+
