@@ -26,6 +26,10 @@ def menu(conn):
                 userService.update_password(conn)
             elif opcion == '7':
                 todoService.insert_todo(conn)
+            elif opcion == '8':
+                todoService.find_todo_by_id(conn)
+            elif opcion == '9':
+                todoService.find_todo_by_title(conn)
         else:
             print(constants.INVALID_OPTION)
 

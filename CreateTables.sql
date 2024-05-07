@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS "User" (
 -- Creación de la tabla ToDo
 CREATE TABLE IF NOT EXISTS ToDo (
     todoId BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    title VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL UNIQUE,
     description TEXT NOT NULL,
     creationDate DATE NOT NULL,
     limitDate DATE NOT NULL,

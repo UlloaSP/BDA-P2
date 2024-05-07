@@ -1,8 +1,102 @@
 import psycopg2
-from psycopg2 import errorcodes
+from psycopg2 import errorcodes, extras
 
 import constants
 import userService
+
+
+def find_todo_by_id(conn, control_tx=True):
+    todoid = input(constants.FIND_TODO_BY_ID_INPUT)
+    sql = constants.SQL_FIND_TODO_BY_ID
+
+    retval = None
+
+    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # cursor con diccionario para poder buscar los nombres de las columnas de la fila
+        try:
+            cur.execute(sql, (todoid,))
+            row = cur.fetchone()  # devuelve la fila que ha encontrado en el select
+            if row:  # if row is not None
+                retval = {
+                    'todoid': row['todoid'],
+                    'title': row['title'],
+                    'description': row['description'],
+                    'creationDate': row['creationdate'],
+                    'limitDate': row['limitdate'],
+                    'status': row['status'],
+                    'priority': row['priority'],
+                }
+
+                print(constants.TODO_INFO_TEMPLATE.format(
+                    todoid=row['todoid'],
+                    title=row['title'],
+                    description=row['description'],
+                    creationDate=row['creationdate'],
+                    limitDate=row['limitdate'],
+                    status=row['status'],
+                    priority=row['priority']
+                ))
+
+            else:
+                print(constants.NON_EXISTENT_TODO_SEARCH_BY_ID.format(
+                    id=todoid
+                ))
+            conn.commit()
+        except psycopg2.Error as e:
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
+            if control_tx:
+                conn.rollback()
+    return retval
+
+
+def find_todo_by_title(conn, control_tx=True):
+    title = input(constants.FIND_TODO_BY_TITLE_INPUT)
+    sql = constants.SQL_FIND_TODO_BY_TITLE
+
+    retval = None
+
+    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # cursor con diccionario para poder buscar los nombres de las columnas de la fila
+        try:
+            cur.execute(sql, (title,))
+            row = cur.fetchone()  # devuelve la fila que ha encontrado en el select
+            if row:  # if row is not None
+                retval = {
+                    'todoid': row['todoid'],
+                    'title': row['title'],
+                    'description': row['description'],
+                    'creationDate': row['creationdate'],
+                    'limitDate': row['limitdate'],
+                    'status': row['status'],
+                    'priority': row['priority'],
+                }
+
+                print(constants.TODO_INFO_TEMPLATE.format(
+                    todoid=row['todoid'],
+                    title=row['title'],
+                    description=row['description'],
+                    creationDate=row['creationdate'],
+                    limitDate=row['limitdate'],
+                    status=row['status'],
+                    priority=row['priority']
+                ))
+
+            else:
+                print(constants.NON_EXISTENT_TODO_SEARCH_BY_TITLE.format(
+                    title=title
+                ))
+            conn.commit()
+        except psycopg2.Error as e:
+            print(constants.GLOBAL_ERROR.format(
+                pgcode=str(e.pgcode),
+                pgerror=str(e.pgerror)
+            ))
+            if control_tx:
+                conn.rollback()
+    return retval
 
 
 def insert_todo(conn):
