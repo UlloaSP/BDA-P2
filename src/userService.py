@@ -28,7 +28,7 @@ def insert_user(conn):
                 if e.diag.column_name == 'email':
                     print(constants.INSERT_USER_DUPLICATED_EMAIL)
                 if e.diag.column_name == 'password':
-                    print(constants.INSERT_USER_NOT_NULL_PASSWORD)
+                    print(constants.NOT_NULL_PASSWORD)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),
@@ -70,7 +70,7 @@ def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor 
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
         try:
-            cur.execute(sql, (name,))
+            cur.execute(sql, {'name': name})
             row = cur.fetchone()  # devuelve la fila que ha encontrado en el select
             if row:  # if row is not None
                 print(constants.USER_INFO_TEMPLATE.format(
@@ -99,7 +99,7 @@ def find_user_by_email(conn, control_tx=True):
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
         try:
-            cur.execute(sql, (email,))
+            cur.execute(sql, {'email': email})
             row = cur.fetchone()  # devuelve la fila que ha encontrado en el select
             if row:  # if row is not None
                 retval = {'id': row['userid'], 'name': row['name'], 'email': row['email'],
@@ -152,7 +152,7 @@ def update_password(conn):
         conn.rollback()
         return
 
-    password = input("Novo contrasinal: ")
+    password = input(constants.NEW_PASSWORD_INPUT)
     if password == "":
         password = None
 

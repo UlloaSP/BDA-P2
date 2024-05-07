@@ -42,6 +42,7 @@ FIND_TODO_BY_TITLE_INPUT = 'Título del ToDo: '
 NAME_INPUT = "Nome: "
 EMAIL_INPUT = "Email: "
 PASSWORD_INPUT = "Contrasinal: "
+NEW_PASSWORD_INPUT = "Novo Contrasinal: "
 
 INSERT_USER_SUCCESS = "O usuario foi insertado con éxito."
 INSERT_USER_DUPLICATED_NAME = "Xa existe un usuario co nome {name}"
