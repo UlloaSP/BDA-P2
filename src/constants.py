@@ -38,7 +38,7 @@ GLOBAL_ERROR = "Erro: {pgcode} - {pgerror}"
 
 NON_EXISTENT_TODO_SEARCH_BY_ID = "O ToDo con id: {id} non existe."
 NON_EXISTENT_TODO_SEARCH_BY_TITLE = "O ToDo con título: {title} non existe."
-NON_EXISTENT_USER_SEARCH_BY_ID = "O usuario con userId: {userid} non existe."
+NON_EXISTENT_USER_SEARCH_BY_ID = "O usuario con userId: {userid} non ten tarefas asignadas."
 NON_EXISTENT_USER_SEARCH_BY_NAME = "O usuario con nome {name} non existe"
 NON_EXISTENT_USER_SEARCH_BY_EMAIL = "O usuario con email {email} non existe"
 
