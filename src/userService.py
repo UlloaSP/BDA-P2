@@ -154,9 +154,7 @@ def delete_user_complete(conn):
     user = find_user_by_email(conn)
 
     # Buca ids de Todos del usuario
-    sql = """
-    select todoId from UserTodo where userId = %(userid)s
-    """
+    sql = constants.SQL_FIND_USER_BY_ID
     todos_id_list = []
 
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -173,17 +171,15 @@ def delete_user_complete(conn):
                 pgerror=str(e.pgerror)
             ))
 
-    # Borra la entrada de UserTodo con id=userId
-    sql = """
-    delete from UserTodo where userId = %(userid)s
-    """
+    # Borra la entrada de UserTodo con ID=userId
+    sql = constants.SQL_DELETE_USER_BY_ID
     with conn.cursor() as cur:
         try:
             cur.execute(sql, {'userid': user['id']})
             if cur.rowcount == 0:
-                print(f"No existe el userid={user['id']}")
+                print(constants.NON_EXISTENT_USER_SEARCH_BY_ID.format(userid=user['id']))
             else:
-                print(f"Se eliminaron {cur.rowcount} filas.")
+                print(constants.DELETE_USER_SUCCESS)
         except psycopg2.Error as e:
             print(constants.GLOBAL_ERROR.format(
                 pgcode=str(e.pgcode),
@@ -195,13 +191,9 @@ def delete_user_complete(conn):
     delete_user(conn, user['email'])
 
     # Buscar todos los Todos y (gracias a la lista de ids) borrarlos si no están en la relación
-    sql = """
-    select * from UserTodo where todoid = %(todoid)s
-    """
+    sql = constants.SQL_FIND_TODOS_BY_USER
 
-    sql_remove = """
-    delete from Todo where todoid = %(todoid)s
-    """
+    sql_remove = constants.SQL_DELETE_TODO_BY_ID
 
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
@@ -215,10 +207,9 @@ def delete_user_complete(conn):
                 else:
                     while row:
                         if cur.rowcount >= 0:
-                            print("Hola")
                             cur.execute(sql_remove, {'todoid': int(todoid)})
                             if cur.rowcount != 1:
-                                print(f"Error al eliminar Todo con id = {todoid}")
+                                print(constants.DELETE_TODO_ERROR.format(todoid=todoid))
                         row = cur.fetchone()
                 conn.commit()
         except psycopg2.Error as e:

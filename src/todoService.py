@@ -116,7 +116,7 @@ def insert_todo(conn):
             todoid = find_todo_by_title(conn)['todoid']
             insert_users_todo(conn, userid, todoid)
             conn.commit()
-            print("A tarefa foi creada correctamente.")
+            print(constants.INSERT_TODO_SUCCESS)
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
                 if e.diag.column_name == 'title':
@@ -145,12 +145,12 @@ def insert_users_todo(conn, userid, todoid):
             cur.execute(sql, {'userid': userid, 'todoid': todoid})
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
-                print(f"Este usuario xa ten esta tarefa.")
+                print(constants.UNIQUE_USER_TODO)
             if e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
                 if e.diag.column_name == 'userid':
-                    print(f"Debe especificarse un usuario.")
+                    print(constants.NOT_NULL_USER)
                 if e.diag.column_name == 'todoid':
-                    print(f"Debe especificarse unha tarefa.")
+                    print(constants.NOT_NULL_TODO)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),
@@ -162,11 +162,9 @@ def insert_users_todo(conn, userid, todoid):
 def add_line_description(conn):
     todo = find_todo_by_title(conn)
 
-    additional_description = input("Engada unha liña á descripción: ")
+    additional_description = input(constants.UPDATE_DESCRIPTION_INPUT)
 
-    sql = """
-    UPDATE Todo SET description = CONCAT(description, %(description)s) WHERE todoid = %(todoid)s
-    """
+    sql = constants.SQL_UPDATE_TODO_BY_DESCRIPTION
 
     with conn.cursor() as cur:
         try:
@@ -183,13 +181,9 @@ def add_line_description(conn):
 def update_date(conn):
     todo = find_todo_by_title(conn)
 
-    days = input("Indique a cantidade de días a engadir á data límite: ")
+    days = input(constants.UPDATE_DATE_INPUT)
 
-    sql = """
-    UPDATE Todo
-    SET limitdate = limitdate + INTERVAL %(days)s DAY
-    WHERE todoid = %(todoid)s
-    """
+    sql = constants.SQL_UPDATE_TODO_BY_DATE
 
     with conn.cursor() as cur:
         try:
@@ -207,10 +201,7 @@ def add_user_to_todo(conn):
     userid = userService.find_user_by_email(conn)['id']
     todoid = find_todo_by_title(conn)['todoid']
 
-    sql = """
-    insert into usertodo (userid, todoid)
-    values(%(userid)s, %(todoid)s)
-    """
+    sql = constants.SQL_INSERT_USER_TODO
     with conn.cursor() as cur:
         try:
             cur.execute(sql, {'userid': userid, 'todoid': todoid})
