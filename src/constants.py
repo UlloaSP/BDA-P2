@@ -26,6 +26,7 @@ SUCCESSFULL_CONNECTION = 'Conectado.'
 FAILED_CONNECTION = 'Erro de conexión:'
 TERMINATING_CONNECTION = 'Desconectando de PosgreSQL.'
 TERMINATED_CONNECTION = 'Desconectado.'
+USER_INTERRUPTION = "\nOperación interrumpida por el usuario."
 
 CREATING_TABLES = 'Creando Taboas'
 CREATED_TABLES = 'Taboas Creadas Correctamente'
