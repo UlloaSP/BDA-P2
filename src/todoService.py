@@ -5,12 +5,15 @@ import constants
 import userService
 
 
-def find_todo_by_id(conn, control_tx=True):
-    todoid = input(constants.FIND_TODO_BY_ID_INPUT)
+def find_todo_by_id(conn):
+    while True:
+        todoid = input(constants.FIND_TODO_BY_ID_INPUT)
+        if todoid != "":
+            break
+
     sql = constants.SQL_FIND_TODO_BY_ID
 
     retval = None
-
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
         try:
@@ -43,18 +46,21 @@ def find_todo_by_id(conn, control_tx=True):
                 ))
             conn.commit()
         except psycopg2.Error as e:
-            print(constants.GLOBAL_ERROR.format(
-                pgcode=str(e.pgcode),
-                pgerror=str(e.pgerror)
-            ))
-            if control_tx:
-                conn.rollback()
+            if e.pgcode == psycopg2.errorcodes.INVALID_TEXT_REPRESENTATION:
+                print(constants.INVALID_ID_FORMAT)
+            else:
+                print(constants.GLOBAL_ERROR.format(
+                    pgcode=str(e.pgcode),
+                    pgerror=str(e.pgerror)
+                ))
+            conn.rollback()
     return retval
 
 
 def find_todo_by_title(conn, title=None, control_tx=True):
-    if not title:
+    while not title or title == "":
         title = input(constants.FIND_TODO_BY_TITLE_INPUT)
+
     sql = constants.SQL_FIND_TODO_BY_TITLE
 
     retval = None
@@ -101,7 +107,7 @@ def find_todo_by_title(conn, title=None, control_tx=True):
 
 
 def insert_todo(conn):
-    user = userService.find_user_by_email(conn)
+    user = userService.find_user_by_email(conn, control_tx=False)
     if not user:
         conn.rollback()
         return
@@ -111,6 +117,9 @@ def insert_todo(conn):
         title = None
 
     description = input(constants.DESCRIPTION_INPUT)
+    if description == "":
+        description = None
+
     limitdate = input(constants.LIMIT_DATE_INPUT)
     if limitdate == "":
         limitdate = None
@@ -129,6 +138,7 @@ def insert_todo(conn):
         try:
             cur.execute(sql, {'title': title, 'description': description, 'limitdate': limitdate,
                               'status': status, 'priority': priority})
+            # sabemos que todoid non dará problema porque a tarefa que buscamos existe. Nunca devolverá None
             todoid = find_todo_by_title(conn, title)['todoid']
             insert_users_todo(conn, user['id'], todoid)
             conn.commit()
@@ -137,16 +147,36 @@ def insert_todo(conn):
             if e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
                 if e.diag.column_name == 'title':
                     print(constants.NOT_NULL_TITLE)
-                if e.diag.column_name == 'description':
+                elif e.diag.column_name == 'description':
                     print(constants.NOT_NULL_DESCRIPTION)
-                if e.diag.column_name == 'limitdate':
+                elif e.diag.column_name == 'limitdate':
                     print(constants.NOT_NULL_LIMIT_DATE)
-                if e.diag.column_name == 'status':
+                elif e.diag.column_name == 'status':
                     print(constants.NOT_NULL_STATUS)
-                if e.diag.column_name == 'priority':
+                elif e.diag.column_name == 'priority':
                     print(constants.NOT_NULL_PRIORITY)
-                if e.pgcode == psycopg2.errorcodes.INVALID_DATETIME_FORMAT:
-                    print(constants.INVALID_DATETIME)
+                else:
+                    print(constants.GENERAL_NOT_NULL)
+            elif e.pgcode == psycopg2.errorcodes.INVALID_DATETIME_FORMAT:
+                print(constants.INVALID_DATETIME)
+            elif e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
+                print(constants.INSERT_TODO_DUPLICATED_TITLE.format(title=title))
+            elif e.pgcode == psycopg2.errorcodes.INVALID_TEXT_REPRESENTATION:
+                if e.diag.column_name == 'status':
+                    print(constants.INVALID_STATUS_FORMAT)
+                elif e.diag.column_name == 'priority':
+                    print(constants.INVALID_PRIORITY_FORMAT)
+                else:
+                    print(constants.GENERAL_INVALID_FORMAT)
+            elif e.pgcode == psycopg2.errorcodes.DATETIME_FIELD_OVERFLOW:
+                print(constants.OVERFLOW_DATETIME)
+            elif e.pgcode == psycopg2.errorcodes.NUMERIC_VALUE_OUT_OF_RANGE:
+                if e.diag.column_name == 'status':
+                    print(constants.OUT_OF_RANGE_STATUS)
+                elif e.diag.column_name == 'priority':
+                    print(constants.OUT_OF_RANGE_PRIORITY)
+                else:
+                    print(constants.GENERAL_OUT_OF_RANGE)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),
@@ -164,11 +194,13 @@ def insert_users_todo(conn, userid, todoid):
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 print(constants.UNIQUE_USER_TODO)
-            if e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
+            elif e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
                 if e.diag.column_name == 'userid':
                     print(constants.NOT_NULL_USER)
-                if e.diag.column_name == 'todoid':
+                elif e.diag.column_name == 'todoid':
                     print(constants.NOT_NULL_TODO)
+                else:
+                    print(constants.GENERAL_NOT_NULL)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),
@@ -216,7 +248,7 @@ def update_date(conn):
 
 
 def add_user_to_todo(conn):
-    user = userService.find_user_by_email(conn)
+    user = userService.find_user_by_email(conn, control_tx=False)
 
     if not user:
         conn.rollback()
@@ -231,7 +263,7 @@ def add_user_to_todo(conn):
     sql = constants.SQL_INSERT_USER_TODO
     with conn.cursor() as cur:
         try:
-            cur.execute(sql, {'userid': user['id'], 'todoid': todo['todoId']})
+            cur.execute(sql, {'userid': user['id'], 'todoid': todo['todoid']})
             conn.commit()
             print(constants.ADD_USER_TO_TODO_SUCCESS)
         except psycopg2.Error as e:

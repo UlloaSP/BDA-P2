@@ -1,17 +1,21 @@
 import psycopg2
 from psycopg2 import extras, errorcodes
-
 import constants
-import todoService
 
 
 def insert_user(conn):
-    while True:
-        name = input(constants.NAME_INPUT)
-        if name != "":
-            break
+    name = input(constants.NAME_INPUT)
+    if name == "":
+        name = None
+
     email = input(constants.EMAIL_INPUT)
+    if email == "":
+        email = None
+
     password = input(constants.PASSWORD_INPUT)
+    if password == "":
+        password = None
+
     sql = constants.SQL_INSERT_USER
 
     with conn.cursor() as cur:
@@ -21,18 +25,21 @@ def insert_user(conn):
             print(constants.INSERT_USER_SUCCESS)
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
-                print(e.diag.column_name)
                 if e.diag.column_name == 'name':
                     print(constants.INSERT_USER_DUPLICATED_NAME.format(name=name))
-                if e.diag.column_name == 'email':
+                elif e.diag.column_name == 'email':
                     print(constants.INSERT_USER_DUPLICATED_EMAIL.format(email=email))
+                else:
+                    print(constants.GENERAL_UNIQUE)
             elif e.pgcode == psycopg2.errorcodes.NOT_NULL_VIOLATION:
                 if e.diag.column_name == 'name':
-                    print(constants.INSERT_USER_DUPLICATED_NAME)
-                if e.diag.column_name == 'email':
-                    print(constants.INSERT_USER_DUPLICATED_EMAIL)
-                if e.diag.column_name == 'password':
+                    print(constants.INSERT_USER_NOT_NULL_NAME)
+                elif e.diag.column_name == 'email':
+                    print(constants.INSERT_USER_NOT_NULL_EMAIL)
+                elif e.diag.column_name == 'password':
                     print(constants.NOT_NULL_PASSWORD)
+                else:
+                    print(constants.GENERAL_NOT_NULL)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),
@@ -66,16 +73,20 @@ def find_users(conn):
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
 
-def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor True
-    name = input(constants.NAME_INPUT)
+def find_user_by_name(conn):
+    # se pide constantemente porque non ten sentido buscar un nome vacío tendo NOT NULL
+    while True:
+        name = input(constants.NAME_INPUT)
+        if name != "":
+            break
 
     sql = constants.SQL_FIND_USER_BY_NAME
 
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # cursor con diccionario para poder buscar los nombres de las columnas de la fila
         try:
-            cur.execute(sql, {'name': name})
-            row = cur.fetchone()  # devuelve la fila que ha encontrado en el select
+            cur.execute(sql, (name,))
+            row = cur.fetchone()
             if row:  # if row is not None
                 print(constants.USER_INFO_TEMPLATE.format(
                     userid=row['userid'],
@@ -96,11 +107,9 @@ def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor 
 
 
 def find_user_by_email(conn, control_tx=True, email=None):
-    if not email:
-        while True:
-            email = input(constants.EMAIL_INPUT)
-            if email != "":
-                break
+    # se pide constantemente porque non ten sentido buscar un email vacío tendo NOT NULL
+    while not email or email == "":
+        email = input(constants.EMAIL_INPUT)
 
     sql = constants.SQL_FIND_USER_BY_EMAIL
     retval = None
@@ -121,7 +130,6 @@ def find_user_by_email(conn, control_tx=True, email=None):
                     password=row['password'],
                     registrationdate=row['registrationdate']
                 ))
-
             else:
                 print(constants.NON_EXISTENT_USER_SEARCH_BY_EMAIL.format(email=email))
             conn.commit()
@@ -135,9 +143,11 @@ def find_user_by_email(conn, control_tx=True, email=None):
     return retval
 
 
-def delete_user(conn, email=None):
+def delete_user(conn, control_tx=True, email=None):
     if not email:
         email = input(constants.EMAIL_INPUT)
+        if email == "":
+            email = None
 
     sql = constants.SQL_DELETE_USER
 
@@ -146,21 +156,23 @@ def delete_user(conn, email=None):
             cur.execute(sql, {'email': email})
             if cur.rowcount == 0:
                 print(constants.NON_EXISTENT_USER_SEARCH_BY_EMAIL.format(email=email))
-            else:
-                print(constants.DELETE_USER_SUCCESS)
         except psycopg2.Error as e:
             print(constants.GLOBAL_ERROR.format(
                 pgcode=str(e.pgcode),
                 pgerror=str(e.pgerror)
             ))
-            conn.rollback()  # isto ocorre sempre que sucede unha excepción
+            if control_tx:
+                conn.rollback()  # isto ocorre sempre que sucede unha excepción
 
 
 def delete_user_complete(conn):
-    user = find_user_by_email(conn)
+    user = find_user_by_email(conn, control_tx=False)
+    if not user:
+        conn.rollback()
+        return
 
     # Buca ids de Todos del usuario
-    sql = constants.SQL_FIND_USER_BY_ID
+    sql = constants.SQL_FIND_TODOS_BY_USERID
     todos_id_list = []
 
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -178,7 +190,7 @@ def delete_user_complete(conn):
             ))
 
     # Borra la entrada de UserTodo con ID=userId
-    sql = constants.SQL_DELETE_USER_BY_ID
+    sql = constants.SQL_DELETE_USERTODO_BY_USERID
     with conn.cursor() as cur:
         try:
             cur.execute(sql, {'userid': user['id']})
@@ -194,7 +206,7 @@ def delete_user_complete(conn):
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
     # ---------------------------------------------
 
-    delete_user(conn, user['email'])
+    delete_user(conn, False, user['email'])
 
     # Buscar todos los Todos y (gracias a la lista de ids) borrarlos si no están en la relación
     sql = constants.SQL_FIND_TODOS_BY_USER
@@ -207,7 +219,6 @@ def delete_user_complete(conn):
             for todoid in todos_id_list:
                 cur.execute(sql, {'todoid': int(todoid)})
                 row = cur.fetchone()
-                print(row)
                 if not row:
                     cur.execute(sql_remove, {'todoid': int(todoid)})
                 else:

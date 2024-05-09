@@ -69,16 +69,28 @@ NOT_NULL_PASSWORD = "Debe especificarse un contranisal"
 NOT_NULL_TITLE = "Debe especificarse un título"
 NOT_NULL_DESCRIPTION = "Debe especificarse unha descripción"
 NOT_NULL_LIMIT_DATE = "Debe especificarse unha data límite"
-NOT_NULL_STATUS = "Debe especificarse un estatus"
+NOT_NULL_STATUS = "Debe especificarse un estado"
 NOT_NULL_PRIORITY = "Debe especificarse unha prioridade"
 NOT_NULL_USER = "Debe especificarse un usuario."
 NOT_NULL_TODO = "Debe especificarse unha tarefa."
+INVALID_STATUS_FORMAT = "O formato do estado non é válido."
+INVALID_PRIORITY_FORMAT = "O formato da prioridade non é válido."
+OUT_OF_RANGE_PRIORITY = "A prioridade indicada está fora de rango."
+OUT_OF_RANGE_STATUS = "O estatus indicado está fora de rango."
 UNIQUE_USER_TODO = "Este usuario xa ten asignada esta tarefa."
 INVALID_DATETIME = "O formato da data non é válido"
+OVERFLOW_DATETIME = "A data proporcionada non é válida."
 FIND_USERS_SUCCESS = "Atopáronse {number} usuario/s"
 DELETE_USER_SUCCESS = "O usuario foi eliminado con éxito."
 UPDATE_PASSWORD_SUCCESS = "Contrasinal actualizado"
 ADD_USER_TO_TODO_SUCCESS = "O usuario agregouse correctamente á tarefa"
+INVALID_ID_FORMAT = "O formato do id proporcionado non é válido."
+INSERT_TODO_DUPLICATED_TITLE = "Xa existe unha tarefa co título {title}"
+
+GENERAL_NOT_NULL = "Algun valor está baleiro."
+GENERAL_UNIQUE = "Algún campo non é válido porque xa figura na base de datos (e debe ser único)."
+GENERAL_INVALID_FORMAT = "O formato dalgún campo non é válido."
+GENERAL_OUT_OF_RANGE = "Algún campo numérico está fora de rango."
 
 
 USER_INFO_TEMPLATE = ("Id: {userid}, Nome: {name}, Correo: {email}, Contrasinal: {password}, "
@@ -96,7 +108,7 @@ SQL_FIND_USERS = """
         select *
         from "User"
         """
-SQL_FIND_USER_BY_ID = """
+SQL_FIND_TODOS_BY_USERID = """
     select todoId from UserTodo where userId = %(userid)s
     """
 
@@ -116,7 +128,7 @@ SQL_DELETE_USER = """
         delete from "User" where email = %(email)s
     """
 
-SQL_DELETE_USER_BY_ID = """
+SQL_DELETE_USERTODO_BY_USERID = """
     delete from UserTodo where userId = %(userid)s
     """
 
