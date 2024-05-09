@@ -1,7 +1,7 @@
 HOST = 'localhost'
-USER = 'ulloa'
-PASSWORD = '3821'
-DB = 'bd'
+USER = 'mon'
+PASSWORD = 'clave'
+DB = 'mon'
 SQL_CREATE_TABLES = './src/CreateTables.sql'
 MENU_TEXT = """
 -- MENÚ --
@@ -9,15 +9,14 @@ MENU_TEXT = """
 2 - Mostrar todos os usuarios
 3 - Buscar usuario por nome
 4 - Buscar usuario por email
-5 - Ver fila
-6 - Filas con prezo maior
-7 - Insertar ToDo
-8 - Buscar ToDo por Id
-9 - Buscat ToDo por título
-10 - Borrar usuario
-11 - Añadir liña á descripción dun ToDo
-12 - Añadir usuario a un ToDo
-13 - Actualizar data límite da tarefa
+5 - Eliminar usuario
+6 - Actualizar contrasinal
+7 - Insertar tarefa
+8 - Buscar tarefa por id
+9 - Buscat tarefa por título
+10 - Engadir liña á descripción dunha tarefa
+11 - Engadir usuario a unha tarefa
+12 - Actualizar data límite da tarefa
 q - Saír
 """
 
@@ -34,25 +33,25 @@ DUPLICATED_TABLES = 'As taboas xa foron creadas anteriormente. Non se crean.'
 
 ERROR = 'Erro: '
 INVALID_OPTION = 'Opción no válida. Por favor, elige una opción del menú.'
-VALID_OPTIONS = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13')
+VALID_OPTIONS = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12')
 GLOBAL_ERROR = "Erro: {pgcode} - {pgerror}"
 
-NON_EXISTENT_TODO_SEARCH_BY_ID = "O ToDo con id: {id} non existe."
-NON_EXISTENT_TODO_SEARCH_BY_TITLE = "O ToDo con título: {title} non existe."
+NON_EXISTENT_TODO_SEARCH_BY_ID = "A tarefa con id: {id} non existe."
+NON_EXISTENT_TODO_SEARCH_BY_TITLE = "A tarefa con título: {title} non existe."
 NON_EXISTENT_USER_SEARCH_BY_ID = "O usuario con userId: {userid} non ten tarefas asignadas."
 NON_EXISTENT_USER_SEARCH_BY_NAME = "O usuario con nome {name} non existe"
 NON_EXISTENT_USER_SEARCH_BY_EMAIL = "O usuario con email {email} non existe"
 
-DELETE_TODO_ERROR = "Error al eliminar Todo con id = {todoid}"
+DELETE_TODO_ERROR = "Error al eliminar tarefa con id = {todoid}"
 
 DEFAULT_INPUT = 'Opción> '
-FIND_TODO_BY_ID_INPUT = 'Id del ToDo: '
-FIND_TODO_BY_TITLE_INPUT = 'Título del ToDo: '
+FIND_TODO_BY_ID_INPUT = 'Id da tarefa: '
+FIND_TODO_BY_TITLE_INPUT = 'Título da tarefa: '
 NAME_INPUT = "Nome: "
 EMAIL_INPUT = "Email: "
 PASSWORD_INPUT = "Contrasinal: "
 NEW_PASSWORD_INPUT = "Novo Contrasinal: "
-TITLE_INPUT = "Título: "
+TITLE_INPUT = "Título da tarefa: "
 DESCRIPTION_INPUT = "Descripcion: "
 LIMIT_DATE_INPUT = "Data límite: "
 STATUS_INPUT = "Estado: "
@@ -75,9 +74,11 @@ NOT_NULL_PRIORITY = "Debe especificarse unha prioridade"
 NOT_NULL_USER = "Debe especificarse un usuario."
 NOT_NULL_TODO = "Debe especificarse unha tarefa."
 UNIQUE_USER_TODO = "Este usuario xa ten asignada esta tarefa."
+INVALID_DATETIME = "O formato da data non é válido"
 FIND_USERS_SUCCESS = "Atopáronse {number} usuario/s"
 DELETE_USER_SUCCESS = "O usuario foi eliminado con éxito."
 UPDATE_PASSWORD_SUCCESS = "Contrasinal actualizado"
+ADD_USER_TO_TODO_SUCCESS = "O usuario agregouse correctamente á tarefa"
 
 
 USER_INFO_TEMPLATE = ("Id: {userid}, Nome: {name}, Correo: {email}, Contrasinal: {password}, "

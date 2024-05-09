@@ -52,8 +52,9 @@ def find_todo_by_id(conn, control_tx=True):
     return retval
 
 
-def find_todo_by_title(conn, control_tx=True):
-    title = input(constants.FIND_TODO_BY_TITLE_INPUT)
+def find_todo_by_title(conn, title=None, control_tx=True):
+    if not title:
+        title = input(constants.FIND_TODO_BY_TITLE_INPUT)
     sql = constants.SQL_FIND_TODO_BY_TITLE
 
     retval = None
@@ -100,12 +101,27 @@ def find_todo_by_title(conn, control_tx=True):
 
 
 def insert_todo(conn):
-    userid = userService.find_user_by_email(conn)['id']
+    user = userService.find_user_by_email(conn)
+    if not user:
+        conn.rollback()
+        return
+
     title = input(constants.TITLE_INPUT)
+    if title == "":
+        title = None
+
     description = input(constants.DESCRIPTION_INPUT)
     limitdate = input(constants.LIMIT_DATE_INPUT)
+    if limitdate == "":
+        limitdate = None
+
     status = input(constants.STATUS_INPUT)
+    if status == "":
+        status = None
+
     priority = input(constants.PRIORITY_INPUT)
+    if priority == "":
+        priority = None
 
     sql = constants.SQL_INSERT_TODO
 
@@ -113,8 +129,8 @@ def insert_todo(conn):
         try:
             cur.execute(sql, {'title': title, 'description': description, 'limitdate': limitdate,
                               'status': status, 'priority': priority})
-            todoid = find_todo_by_title(conn)['todoid']
-            insert_users_todo(conn, userid, todoid)
+            todoid = find_todo_by_title(conn, title)['todoid']
+            insert_users_todo(conn, user['id'], todoid)
             conn.commit()
             print(constants.INSERT_TODO_SUCCESS)
         except psycopg2.Error as e:
@@ -129,6 +145,8 @@ def insert_todo(conn):
                     print(constants.NOT_NULL_STATUS)
                 if e.diag.column_name == 'priority':
                     print(constants.NOT_NULL_PRIORITY)
+                if e.pgcode == psycopg2.errorcodes.INVALID_DATETIME_FORMAT:
+                    print(constants.INVALID_DATETIME)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),
@@ -198,14 +216,24 @@ def update_date(conn):
 
 
 def add_user_to_todo(conn):
-    userid = userService.find_user_by_email(conn)['id']
-    todoid = find_todo_by_title(conn)['todoid']
+    user = userService.find_user_by_email(conn)
+
+    if not user:
+        conn.rollback()
+        return
+
+    todo = find_todo_by_title(conn)
+
+    if not todo:
+        conn.rollback()
+        return
 
     sql = constants.SQL_INSERT_USER_TODO
     with conn.cursor() as cur:
         try:
-            cur.execute(sql, {'userid': userid, 'todoid': todoid})
+            cur.execute(sql, {'userid': user['id'], 'todoid': todo['todoId']})
             conn.commit()
+            print(constants.ADD_USER_TO_TODO_SUCCESS)
         except psycopg2.Error as e:
             print(constants.GLOBAL_ERROR.format(
                 pgcode=str(e.pgcode),

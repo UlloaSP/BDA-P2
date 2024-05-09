@@ -6,7 +6,10 @@ import todoService
 
 
 def insert_user(conn):
-    name = input(constants.NAME_INPUT)
+    while True:
+        name = input(constants.NAME_INPUT)
+        if name != "":
+            break
     email = input(constants.EMAIL_INPUT)
     password = input(constants.PASSWORD_INPUT)
     sql = constants.SQL_INSERT_USER
@@ -94,7 +97,10 @@ def find_user_by_name(conn):  # Si no se pasa control_tx entonces toma el valor 
 
 def find_user_by_email(conn, control_tx=True, email=None):
     if not email:
-        email = input(constants.EMAIL_INPUT)
+        while True:
+            email = input(constants.EMAIL_INPUT)
+            if email != "":
+                break
 
     sql = constants.SQL_FIND_USER_BY_EMAIL
     retval = None
