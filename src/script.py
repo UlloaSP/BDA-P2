@@ -34,7 +34,7 @@ def menu(conn):
                 elif opcion == '10':
                     todoService.add_line_description(conn)
                 elif opcion == '11':
-                    todoService.add_user_to_todo(conn)
+                    todoService.insert_users_todo(conn)
                 elif opcion == '12':
                     todoService.update_date(conn)
                 else:

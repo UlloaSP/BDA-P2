@@ -86,6 +86,8 @@ UPDATE_PASSWORD_SUCCESS = "Contrasinal actualizado"
 ADD_USER_TO_TODO_SUCCESS = "O usuario agregouse correctamente á tarefa"
 INVALID_ID_FORMAT = "O formato do id proporcionado non é válido."
 INSERT_TODO_DUPLICATED_TITLE = "Xa existe unha tarefa co título {title}"
+ADD_LINE_TO_DESCRIPTION_SUCCESS = "Agregouse a descripción adicional."
+UPDATE_DATE_SUCCESS = "A data actualizouse correctamente."
 
 GENERAL_NOT_NULL = "Algun valor está baleiro."
 GENERAL_UNIQUE = "Algún campo non é válido porque xa figura na base de datos (e debe ser único)."
