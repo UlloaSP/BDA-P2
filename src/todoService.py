@@ -48,6 +48,8 @@ def find_todo_by_id(conn):
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.INVALID_TEXT_REPRESENTATION:
                 print(constants.INVALID_ID_FORMAT)
+            elif e.pgcode == psycopg2.errorcodes.NUMERIC_VALUE_OUT_OF_RANGE:
+                print(constants.NUMERIC_VALUE_OUT_OF_RANGE)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),

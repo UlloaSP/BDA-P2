@@ -3,22 +3,16 @@ USER = 'Usuario: '
 PASSWORD = 'Contraseña: '
 DB = 'Base de Datos: '
 SQL_CREATE_TABLES = './src/CreateTables.sql'
-DELETE = "Desea que al terminar se eliminen las tablas de la BD? (True || False)"
+DELETE = "Desea que al terminar se eliminen las tablas de la BD? (True or False)"
 MENU_TEXT = """
 -- MENÚ --
-1 - Insertar usuario
-2 - Mostrar todos los usuarios
-3 - Buscar usuario por nombre
-4 - Buscar usuario por email
-5 - Eliminar usuario
-6 - Actualizar contraseña
-7 - Insertar tarea
-8 - Buscar tarea por id
-9 - Buscar tarea por título
-10 - Añadir linea á descripción de una tarea
-11 - Añadir usuario a una tareaa
-12 - Actualizar fecha límite de tarea
-q - Saír
+01 - Insertar usuario               02 - Mostrar todos los usuarios 
+03 - Buscar usuario por nombre      04 - Buscar usuario por email
+05 - Eliminar usuario               06 - Actualizar contraseña                 
+07 - Insertar tarea                 08 - Buscar tarea por id
+09 - Buscar tarea por título        10 - Añadir linea á descripción de una tarea 
+11 - Añadir usuario a una tareaa    12 - Actualizar fecha límite de tarea
+q - Salir
 """
 
 TRY_CONNECTION = 'Conectando a PosgreSQL...'
@@ -37,7 +31,9 @@ NON_EXISTENT_TABLES = 'Las tablas no existen. No se eliminan'
 
 ERROR = 'Error: '
 INVALID_OPTION = 'Opción no válida. Por favor, elige una opción del menú.'
-VALID_OPTIONS = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12')
+VALID_OPTIONS = ('01', '02', '03', '04', '05', '06', '07', '08', '09',
+                 '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                 '10', '11', '12')
 GLOBAL_ERROR = "Erro: {pgcode} - {pgerror}"
 
 NON_EXISTENT_TODO_SEARCH_BY_ID = "La con id: {id} no existe."
@@ -49,7 +45,7 @@ NON_EXISTENT_USER_SEARCH_BY_EMAIL = "El usuario con email {email} no existe"
 DELETE_TODO_ERROR = "Error al eliminar tarea con id = {todoid}"
 
 DEFAULT_INPUT = 'Opción> '
-FIND_TODO_BY_ID_INPUT = 'Id de la tarea '
+FIND_TODO_BY_ID_INPUT = 'Id de la tarea: '
 FIND_TODO_BY_TITLE_INPUT = 'Título de la tarea: '
 NAME_INPUT = "Nombre: "
 EMAIL_INPUT = "Email: "
@@ -62,7 +58,7 @@ STATUS_INPUT = "Estado: "
 PRIORITY_INPUT = "Prioridad: "
 UPDATE_DESCRIPTION_INPUT = "Añade una linea a la descripción: "
 UPDATE_DATE_INPUT = "Indique la cantidad de días en los que desea posponer la fecha límite: "
-
+NUMERIC_VALUE_OUT_OF_RANGE = "El id proporcionado está fuera del rango permitido."
 INSERT_TODO_SUCCESS = "La tarea fue creada correctamente."
 INSERT_USER_SUCCESS = "El usuario fue insertado con éxito."
 INSERT_USER_DUPLICATED_NAME = "Xa existe un usuario con el nombre {name}"
@@ -89,7 +85,7 @@ DELETE_USER_SUCCESS = "El usuario fue eliminado correctamente."
 UPDATE_PASSWORD_SUCCESS = "Contraseña actualizada correctamente."
 ADD_USER_TO_TODO_SUCCESS = "Usuario agregado correctamente a la tarea."
 INVALID_ID_FORMAT = "El formato del id proporcionado no es válido."
-INSERT_TODO_DUPLICATED_TITLE = "Ya existe una tarefa con título {title}"
+INSERT_TODO_DUPLICATED_TITLE = "Ya existe una tarea con título {title}"
 ADD_LINE_TO_DESCRIPTION_SUCCESS = "La descripción se ha actualizado correctamente."
 UPDATE_DATE_SUCCESS = "La fecha se ha actualizado correctamente."
 
