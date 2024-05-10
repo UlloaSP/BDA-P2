@@ -22,7 +22,7 @@ q - Saír
 
 TRY_CONNECTION = 'Conectando a PosgreSQL...'
 SUCCESSFULL_CONNECTION = 'Conectado.'
-FAILED_CONNECTION = 'Error de conexión:'
+FAILED_CONNECTION = 'Error de conexión: {e}'
 TERMINATING_CONNECTION = 'Desconectando de PosgreSQL.'
 TERMINATED_CONNECTION = 'Desconectado.'
 USER_INTERRUPTION = "\nOperación interrumpida por el usuario."

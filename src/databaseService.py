@@ -26,7 +26,7 @@ def connect_db():
         return conn
 
     except Exception as e:
-        print(constants.FAILED_CONNECTION + f"{e}")
+        print(constants.FAILED_CONNECTION.format(e=e))
         sys.exit(1)
 
 
