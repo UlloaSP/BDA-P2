@@ -48,6 +48,7 @@ def main():
     conn = databaseService.connect_db()
     databaseService.create_tables(conn)
     menu(conn)
+    databaseService.drop_tables(conn)
     databaseService.disconnect_db(conn)
 
 

@@ -7,15 +7,15 @@ import constants
 
 
 def connect_db():
-    print(constants.TRY_CONNECTION)
     try:
 
         conn = psycopg2.connect(
-            host=constants.HOST,
-            user=constants.USER,
-            password=constants.PASSWORD,
-            dbname=constants.DB
+            host=input(constants.HOST),
+            user=input(constants.USER),
+            password=input(constants.PASSWORD),
+            dbname=input(constants.DB)
         )
+        print(constants.TRY_CONNECTION)
 
         conn.autocommit = False
 
@@ -48,6 +48,24 @@ def create_tables(conn):
         except psycopg2.Error as e:
             if e.pgcode == psycopg2.errorcodes.DUPLICATE_TABLE:
                 print(constants.DUPLICATED_TABLES)
+            else:
+                print(constants.GLOBAL_ERROR.format(
+                    pgcode=str(e.pgcode),
+                    pgerror=str(e.pgerror)
+                ))
+            conn.rollback()
+
+
+def drop_tables(conn):
+    with conn.cursor() as cur:
+        try:
+            print(constants.DELETING_TABLES)
+            cur.execute(constants.SQl_DROP_TABLES)
+            conn.commit()
+            print(constants.DELETED_TABLES)
+        except psycopg2.Error as e:
+            if e.pgcode == psycopg2.errorcodes.UNDEFINED_TABLE:
+                print(constants.NON_EXISTENT_TABLES)
             else:
                 print(constants.GLOBAL_ERROR.format(
                     pgcode=str(e.pgcode),

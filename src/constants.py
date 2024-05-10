@@ -1,7 +1,7 @@
-HOST = 'localhost'
-USER = 'ulloa'
-PASSWORD = '3821'
-DB = 'bd'
+HOST = 'Host: '
+USER = 'Usuario: '
+PASSWORD = 'Contraseña: '
+DB = 'Base de Datos: '
 SQL_CREATE_TABLES = './src/CreateTables.sql'
 MENU_TEXT = """
 -- MENÚ --
@@ -27,9 +27,12 @@ TERMINATING_CONNECTION = 'Desconectando de PosgreSQL.'
 TERMINATED_CONNECTION = 'Desconectado.'
 USER_INTERRUPTION = "\nOperación interrumpida por el usuario."
 
+DELETING_TABLES = 'Eliminando Tablas'
+DELETED_TABLES = 'Tablas Eliminadas Correctamente'
 CREATING_TABLES = 'Creando Tablas'
 CREATED_TABLES = 'Tablas Creadas Correctamente'
 DUPLICATED_TABLES = 'Las tablas ya existen. No se crean'
+NON_EXISTENT_TABLES = 'Las tablas no existen. No se eliminan'
 
 ERROR = 'Error: '
 INVALID_OPTION = 'Opción no válida. Por favor, elige una opción del menú.'
@@ -175,3 +178,9 @@ SQL_FIND_TODOS_BY_USER = """
 SQL_DELETE_TODO_BY_ID = """
     delete from Todo where todoid = %(todoid)s
     """
+
+SQl_DROP_TABLES = """
+    delete from UserTodo;
+    delete from Todo;
+    delete from "User";
+"""

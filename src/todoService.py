@@ -272,7 +272,7 @@ def update_date(conn):
                 print(constants.INVALID_DATETIME)
             else:
                 print(constants.GLOBAL_ERROR.format(
-                pgcode=str(e.pgcode),
-                pgerror=str(e.pgerror)
+                    pgcode=str(e.pgcode),
+                    pgerror=str(e.pgerror)
                 ))
             conn.rollback()  # isto ocorre sempre que sucede unha excepción
