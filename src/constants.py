@@ -1,22 +1,22 @@
 HOST = 'localhost'
-USER = 'mon'
-PASSWORD = 'clave'
-DB = 'mon'
+USER = 'ulloa'
+PASSWORD = '3821'
+DB = 'bd'
 SQL_CREATE_TABLES = './src/CreateTables.sql'
 MENU_TEXT = """
 -- MENÚ --
 1 - Insertar usuario
-2 - Mostrar todos os usuarios
-3 - Buscar usuario por nome
+2 - Mostrar todos los usuarios
+3 - Buscar usuario por nombre
 4 - Buscar usuario por email
 5 - Eliminar usuario
-6 - Actualizar contrasinal
-7 - Insertar tarefa
-8 - Buscar tarefa por id
-9 - Buscat tarefa por título
-10 - Engadir liña á descripción dunha tarefa
-11 - Engadir usuario a unha tarefa
-12 - Actualizar data límite da tarefa
+6 - Actualizar contraseña
+7 - Insertar tarea
+8 - Buscar tarea por id
+9 - Buscar tarea por título
+10 - Añadir linea á descripción de una tarea
+11 - Añadir usuario a una tareaa
+12 - Actualizar fecha límite de tarea
 q - Saír
 """
 
