@@ -47,8 +47,14 @@ def menu(conn):
 def main():
     conn = databaseService.connect_db()
     databaseService.create_tables(conn)
+    while True:
+        cond = input(constants.DELETE)
+        if cond == 'True' or cond == 'False':
+            break
+
     menu(conn)
-    databaseService.drop_tables(conn)
+    if cond == "True":
+        databaseService.drop_tables(conn)
     databaseService.disconnect_db(conn)
 
 

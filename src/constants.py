@@ -3,6 +3,7 @@ USER = 'Usuario: '
 PASSWORD = 'Contraseña: '
 DB = 'Base de Datos: '
 SQL_CREATE_TABLES = './src/CreateTables.sql'
+DELETE = "Desea que al terminar se eliminen las tablas de la BD? (True || False)"
 MENU_TEXT = """
 -- MENÚ --
 1 - Insertar usuario
@@ -181,6 +182,9 @@ SQL_DELETE_TODO_BY_ID = """
 
 SQl_DROP_TABLES = """
     delete from UserTodo;
+    drop table UserTodo;
     delete from Todo;
+    drop table Todo;
     delete from "User";
+    drop table "User";
 """
