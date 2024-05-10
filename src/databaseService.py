@@ -15,6 +15,8 @@ def connect_db():
             password=input(constants.PASSWORD),
             dbname=input(constants.DB)
         )
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE)
+
         print(constants.TRY_CONNECTION)
 
         conn.autocommit = False
