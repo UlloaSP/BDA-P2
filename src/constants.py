@@ -10,7 +10,7 @@ MENU_TEXT = """
 03 - Buscar usuario por nombre      04 - Buscar usuario por email
 05 - Eliminar usuario               06 - Actualizar contraseña                 
 07 - Insertar tarea                 08 - Buscar tarea por id
-09 - Buscar tarea por título        10 - Añadir linea á descripción de una tarea 
+09 - Buscar tarea por título        10 - Actualizar descripción de una tarea 
 11 - Añadir usuario a una tareaa    12 - Actualizar fecha límite de tarea
 q - Salir
 """
