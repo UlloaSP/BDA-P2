@@ -2,7 +2,7 @@ HOST = 'Host: '
 USER = 'Usuario: '
 PASSWORD = 'Contraseña: '
 DB = 'Base de Datos: '
-SQL_CREATE_TABLES = './src/CreateTables.sql'
+SQL_CREATE_TABLES = './CreateTables.sql'
 DELETE = "Desea que al terminar se eliminen las tablas de la BD? (True or False)"
 MENU_TEXT = """
 -- MENÚ --
