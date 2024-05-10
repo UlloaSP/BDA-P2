@@ -22,84 +22,84 @@ q - Saír
 
 TRY_CONNECTION = 'Conectando a PosgreSQL...'
 SUCCESSFULL_CONNECTION = 'Conectado.'
-FAILED_CONNECTION = 'Erro de conexión:'
+FAILED_CONNECTION = 'Error de conexión:'
 TERMINATING_CONNECTION = 'Desconectando de PosgreSQL.'
 TERMINATED_CONNECTION = 'Desconectado.'
 USER_INTERRUPTION = "\nOperación interrumpida por el usuario."
 
-CREATING_TABLES = 'Creando Taboas'
-CREATED_TABLES = 'Taboas Creadas Correctamente'
-DUPLICATED_TABLES = 'As taboas xa foron creadas anteriormente. Non se crean.'
+CREATING_TABLES = 'Creando Tablas'
+CREATED_TABLES = 'Tablas Creadas Correctamente'
+DUPLICATED_TABLES = 'Las tablas ya existen. No se crean'
 
-ERROR = 'Erro: '
+ERROR = 'Error: '
 INVALID_OPTION = 'Opción no válida. Por favor, elige una opción del menú.'
 VALID_OPTIONS = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12')
 GLOBAL_ERROR = "Erro: {pgcode} - {pgerror}"
 
-NON_EXISTENT_TODO_SEARCH_BY_ID = "A tarefa con id: {id} non existe."
-NON_EXISTENT_TODO_SEARCH_BY_TITLE = "A tarefa con título: {title} non existe."
-NON_EXISTENT_USER_SEARCH_BY_ID = "O usuario con userId: {userid} non ten tarefas asignadas."
-NON_EXISTENT_USER_SEARCH_BY_NAME = "O usuario con nome {name} non existe"
-NON_EXISTENT_USER_SEARCH_BY_EMAIL = "O usuario con email {email} non existe"
+NON_EXISTENT_TODO_SEARCH_BY_ID = "La con id: {id} no existe."
+NON_EXISTENT_TODO_SEARCH_BY_TITLE = "La tarea con título: {title} no existe."
+NON_EXISTENT_USER_SEARCH_BY_ID = "El usuario con userId: {userid} no tiene tareas asignadas."
+NON_EXISTENT_USER_SEARCH_BY_NAME = "El usuario con nombre {name} no existe"
+NON_EXISTENT_USER_SEARCH_BY_EMAIL = "El usuario con email {email} no existe"
 
-DELETE_TODO_ERROR = "Error al eliminar tarefa con id = {todoid}"
+DELETE_TODO_ERROR = "Error al eliminar tarea con id = {todoid}"
 
 DEFAULT_INPUT = 'Opción> '
-FIND_TODO_BY_ID_INPUT = 'Id da tarefa: '
-FIND_TODO_BY_TITLE_INPUT = 'Título da tarefa: '
-NAME_INPUT = "Nome: "
+FIND_TODO_BY_ID_INPUT = 'Id de la tarea '
+FIND_TODO_BY_TITLE_INPUT = 'Título de la tarea: '
+NAME_INPUT = "Nombre: "
 EMAIL_INPUT = "Email: "
-PASSWORD_INPUT = "Contrasinal: "
-NEW_PASSWORD_INPUT = "Novo Contrasinal: "
-TITLE_INPUT = "Título da tarefa: "
-DESCRIPTION_INPUT = "Descripcion: "
-LIMIT_DATE_INPUT = "Data límite: "
+PASSWORD_INPUT = "Contraseña: "
+NEW_PASSWORD_INPUT = "Nueva Contraseña: "
+TITLE_INPUT = "Título e la tarea: "
+DESCRIPTION_INPUT = "Descripción: "
+LIMIT_DATE_INPUT = "Fecha Límite: "
 STATUS_INPUT = "Estado: "
-PRIORITY_INPUT = "Prioridade: "
-UPDATE_DESCRIPTION_INPUT = "Engada unha liña á descripción: "
-UPDATE_DATE_INPUT = "Indique a cantidade de días a engadir á data límite: "
+PRIORITY_INPUT = "Prioridad: "
+UPDATE_DESCRIPTION_INPUT = "Añade una linea a la descripción: "
+UPDATE_DATE_INPUT = "Indique la cantidad de días en los que desea posponer la fecha límite: "
 
-INSERT_TODO_SUCCESS = "A tarefa foi creada correctamente."
-INSERT_USER_SUCCESS = "O usuario foi insertado con éxito."
-INSERT_USER_DUPLICATED_NAME = "Xa existe un usuario co nome {name}"
-INSERT_USER_DUPLICATED_EMAIL = "Xa existe un usuario co email {email}"
-INSERT_USER_NOT_NULL_NAME = "Debe especificarse un nome de usuario"
+INSERT_TODO_SUCCESS = "La tarea fue creada correctamente."
+INSERT_USER_SUCCESS = "El usuario fue insertado con éxito."
+INSERT_USER_DUPLICATED_NAME = "Xa existe un usuario con el nombre {name}"
+INSERT_USER_DUPLICATED_EMAIL = "Xa existe un usuario con el email {email}"
+INSERT_USER_NOT_NULL_NAME = "Debe especificarse un nombre de usuario"
 INSERT_USER_NOT_NULL_EMAIL = "Debe especificarse un correo electrónico"
-NOT_NULL_PASSWORD = "Debe especificarse un contranisal"
+NOT_NULL_PASSWORD = "Debe especificarse una contraseña"
 NOT_NULL_TITLE = "Debe especificarse un título"
-NOT_NULL_DESCRIPTION = "Debe especificarse unha descripción"
-NOT_NULL_LIMIT_DATE = "Debe especificarse unha data límite"
+NOT_NULL_DESCRIPTION = "Debe especificarse una descripción"
+NOT_NULL_LIMIT_DATE = "Debe especificarse una fecha límite"
 NOT_NULL_STATUS = "Debe especificarse un estado"
-NOT_NULL_PRIORITY = "Debe especificarse unha prioridade"
+NOT_NULL_PRIORITY = "Debe especificarse una prioridad"
 NOT_NULL_USER = "Debe especificarse un usuario."
-NOT_NULL_TODO = "Debe especificarse unha tarefa."
-INVALID_STATUS_FORMAT = "O formato do estado non é válido."
-INVALID_PRIORITY_FORMAT = "O formato da prioridade non é válido."
-OUT_OF_RANGE_PRIORITY = "A prioridade indicada está fora de rango."
-OUT_OF_RANGE_STATUS = "O estatus indicado está fora de rango."
-UNIQUE_USER_TODO = "Este usuario xa ten asignada esta tarefa."
-INVALID_DATETIME = "O formato da data non é válido"
-OVERFLOW_DATETIME = "A data proporcionada non é válida."
-FIND_USERS_SUCCESS = "Atopáronse {number} usuario/s"
-DELETE_USER_SUCCESS = "O usuario foi eliminado con éxito."
-UPDATE_PASSWORD_SUCCESS = "Contrasinal actualizado"
-ADD_USER_TO_TODO_SUCCESS = "O usuario agregouse correctamente á tarefa"
-INVALID_ID_FORMAT = "O formato do id proporcionado non é válido."
-INSERT_TODO_DUPLICATED_TITLE = "Xa existe unha tarefa co título {title}"
-ADD_LINE_TO_DESCRIPTION_SUCCESS = "Agregouse a descripción adicional."
-UPDATE_DATE_SUCCESS = "A data actualizouse correctamente."
+NOT_NULL_TODO = "Debe especificarse una tarea."
+INVALID_STATUS_FORMAT = "El formato del estado no es válido."
+INVALID_PRIORITY_FORMAT = "El formato de la prioridad no es válido."
+OUT_OF_RANGE_PRIORITY = "La prioridad indicada está fuera de rango."
+OUT_OF_RANGE_STATUS = "El estado indicado está fuera de rango."
+UNIQUE_USER_TODO = "Este usuario ya tiene asignada esta tarea."
+INVALID_DATETIME = "El formato de la fecha no es válido."
+OVERFLOW_DATETIME = "La fecha proporcionada no es válida."
+FIND_USERS_SUCCESS = "Se encontraron {number} usuario/s"
+DELETE_USER_SUCCESS = "El usuario fue eliminado correctamente."
+UPDATE_PASSWORD_SUCCESS = "Contraseña actualizada correctamente."
+ADD_USER_TO_TODO_SUCCESS = "Usuario agregado correctamente a la tarea."
+INVALID_ID_FORMAT = "El formato del id proporcionado no es válido."
+INSERT_TODO_DUPLICATED_TITLE = "Ya existe una tarefa con título {title}"
+ADD_LINE_TO_DESCRIPTION_SUCCESS = "La descripción se ha actualizado correctamente."
+UPDATE_DATE_SUCCESS = "La fecha se ha actualizado correctamente."
 
-GENERAL_NOT_NULL = "Algun valor está baleiro."
-GENERAL_UNIQUE = "Algún campo non é válido porque xa figura na base de datos (e debe ser único)."
-GENERAL_INVALID_FORMAT = "O formato dalgún campo non é válido."
-GENERAL_OUT_OF_RANGE = "Algún campo numérico está fora de rango."
+GENERAL_NOT_NULL = "Algún valor está vacio."
+GENERAL_UNIQUE = "Algún campo no es válido porque ya figura en la BBDD (debe ser único)."
+GENERAL_INVALID_FORMAT = "El formato de algún campo no es válido."
+GENERAL_OUT_OF_RANGE = "Algún campo numérico está fuera de rango."
 
 
-USER_INFO_TEMPLATE = ("Id: {userid}, Nome: {name}, Correo: {email}, Contrasinal: {password}, "
-                      "Data de rexistro: {registrationdate}")
+USER_INFO_TEMPLATE = ("Id: {userid}, Nombre: {name}, Correo: {email}, Contraseña: {password}, "
+                      "Fehca de Alta: {registrationdate}")
 
 TODO_INFO_TEMPLATE = ("Id: {todoid}, Titulo: {title}, Descripción: {description}, Fecha de Creación: {creationDate},"
-                      "Fecha Límite: {limitDate}, Estado: {status}, Prioridade: {priority}")
+                      "Fecha Límite: {limitDate}, Estado: {status}, Prioridad: {priority}")
 
 SQL_INSERT_USER = """
         insert into "User" (name, email, password, registrationDate)
